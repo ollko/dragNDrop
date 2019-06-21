@@ -1,0 +1,57 @@
+#test-2-words{
+    position: relative;
+}
+
+#test-2-meanings{
+    position: relative;
+}
+
+.test-2-word{
+    display: inline-block;
+    position: absolute;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    touch-action: none;
+    
+    top: 0;
+    left: 20px;
+    border: 1px solid red;
+    border-radius: .4em 0 0 .4em;
+    padding: .2em .5em;
+    margin-bottom: .2em;
+    background: yellow;
+    color: red;
+}
+
+.test-2-meaning{
+    display: inline-block;
+    position: absolute;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    touch-action: none;
+    
+    top: 0;
+    left: 20px;
+    border: 1px solid #4c4c4c;
+    border-radius:  0 .4em .4em 0;
+    padding: .2em .5em;
+    margin-bottom: .2em;
+    background: #cccccc;
+    color: red;
+
+}
+
+.active {
+    /*transform: scale(1.1);*/
+    z-index: 5;
+    border-style: dotted;
+
+}

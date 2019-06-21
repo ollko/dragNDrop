@@ -1,0 +1,92 @@
+.sorting-demo {
+  width: 600px;
+  background: rgba(255, 193, 7, 0.17);
+}
+.sorting-demo * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+}
+.sorting-demo__wrapper {
+  height: 400px;
+  position: relative;
+  border-radius: 2px;
+}
+.sorting-demo__corner {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  position: absolute;
+  background: blue;
+  border: 2px solid grey;
+  border-radius: 2px;
+}
+.sorting-demo__corner.top-left {
+  top: 0;
+  left: 0;
+}
+.sorting-demo__corner.top-right {
+  top: 0;
+  right: 0;
+}
+.sorting-demo__corner.bottom-left {
+  bottom: 0;
+  left: 0;
+}
+.sorting-demo__corner.bottom-right {
+  bottom: 0;
+  right: 0;
+}
+.sorting-demo__sortable {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  border-radius: 99px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: move;
+  transition: transform 0.1s ease-out, opacity 0.3s ease-out, background 0.3s ease-out;
+  border: 4px solid;
+}
+.sorting-demo__sortable.active {
+  transform: scale(1.1);
+  z-index: 5;
+  border-style: dotted;
+}
+.sorting-demo__sortable.inactive {
+  cursor: not-allowed;
+  background: c1c1c1 !important;
+  border-color: yellow !important;
+}
+.sorting-demo__sortable.one {
+  background: #2196f3;
+  border-color: #1380d8;
+}
+.sorting-demo__sortable.two {
+  background: #00BCD4;
+  border-color: #03a3b7;
+}
+.sorting-demo__sortable.three {
+  background: #4CAF50;
+  border-color: #3a983e;
+}
+.sorting-demo__sortable.four {
+  background: #8BC34A;
+  border-color: #78ad3b;
+}
+.sorting-demo__progress {
+  font-size: 1.3rem;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  margin-top: 6px;
+}
+.sorting-demo__options {
+  margin-top: 1em;
+  width: 600px;
+}
+
+/*# sourceMappingURL=style.css.map */
