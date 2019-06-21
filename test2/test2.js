@@ -20,11 +20,14 @@ $(function () {
             ' - (of a vehicle or machine) made to go faster or be more powerful',
             ' - Fiber – the material like thread that form plant or artificial material (волокно)',
         ],
+
         'lastItemHeight': 0,
         'setGap': false,
         'gap': 0,
         'parentHeight': 0,
         'lastElementBottom': 0,
+
+        // 'wordsTopLeftArray': {},
     };
 
     var formView = {
@@ -33,6 +36,8 @@ $(function () {
             this.meanings = dataView.meanings;
             dataView.lastElementBottom = 0;
             this.renderWords();
+            dataView.wordsTopLeftArray = octopus.getWordsTopLeftArray();
+            console.log('333',dataView.wordsTopLeftArray);
             this.renderMeanings();
         },
 
@@ -64,7 +69,6 @@ $(function () {
         },
 
         displayArrayData: function(array, isRandom, perentID, classTemplate, idTemplate) {
-            var self = this;
             if ( isRandom ) {
                 this.randomArray(array);  
             };
@@ -83,7 +87,7 @@ $(function () {
                 perent.append(element[0]);
                 var element = $("#" + idTemplate.replace('%id%', id))[0];
                 element.style.top = lastElementBottom +'px';
-                lastElementBottom += (element.offsetHeight);
+                lastElementBottom += element.offsetHeight;
 
                 return displace(element, {
                     constrain: true,
@@ -101,10 +105,10 @@ $(function () {
                     onTouchStop: function(el){
                         el.className = el.className.replace(' active', '');
                     },
+                    // customMove: function(el){
 
-                })
-                
-                
+                    // }
+                }) 
             });
         },
 
@@ -120,7 +124,19 @@ $(function () {
         getElementBottom: function(el) {
             var box = el.getBoundingClientRect();
             return box.bottom + pageYOffset
+        },
+        getWordsTopLeftArray: function() {
+            var res = {};
+            // var words = $('.test-2-word');
+            // for ( var i=0; i<words.length; i++ ) {
+            //     res[i] = [words[i].offsetTop, words[i].offsetLeft + words[i].offsetWidth];
+            // }
+            $('.test-2-word').each( function( i, item ) {
+                res[i] = [item.offsetTop, item.offsetLeft + item.offsetWidth];
+            });
+            return res
         }
+            
     };
     octopus.init();
 })
