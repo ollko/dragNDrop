@@ -15,12 +15,12 @@
   border-radius: 2px;
 }
 .sorting-demo__corner {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   display: inline-block;
   position: absolute;
-  background: blue;
-  border: 2px solid grey;
+  background: #7161dc;
+  border: 5px solid #ff9800;
   border-radius: 2px;
 }
 .sorting-demo__corner.top-left {
@@ -78,6 +78,7 @@
   border-color: #78ad3b;
 }
 .sorting-demo__progress {
+  color: white;
   font-size: 1.3rem;
   width: 100%;
   display: inline-block;

@@ -1,9 +1,18 @@
-#test-2-words{
-    position: relative;
+body {
+    background-color: pink; 
 }
 
-#test-2-meanings{
+.test-2-container {
+    border: 4px solid #d61274;
+    border-radius: .4em;
+    padding: .5em 1em;
+    margin-top: 5em;
+    background-color: #fff; 
+}
+
+#test-2 {
     position: relative;
+    
 }
 
 .test-2-word{
