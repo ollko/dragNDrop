@@ -15,7 +15,7 @@ $(function () {
             ' - to send out electrical signals using a radio, television, or computer network',
             ' - a unit of computer information consisting of 1000000000000000 bytes',
             ' - information in an electronic form that can be stored and used by a computer',
-            ' - a system for showing very clear pictures on a television or computer screen or for producing very clear sound (high definition)',
+            ' - a system for showing very clear pictures on a television or',
             ' - a set of wires, that carries electricity, phone signals, etc',
             ' - (of a vehicle or machine) made to go faster or be more powerful',
             ' - Fiber – the material like thread that form plant or artificial material (волокно)'
@@ -23,25 +23,17 @@ $(function () {
         
         'lastElementBottom': 0,
         'gapForStick': 10,
-        'getWordsPositionsArray': {},
-
-        'test2Answers': null
+        'allBusy': false,
+        'test2Result': []
     };
 
     var formView = {
         init: function() {
             this.words = dataView.words;
             this.meanings = dataView.meanings;
-            // dataView.lastElementBottom = 0;
             this.renderWords();
-            dataView.WordsPositionsArray = octopus.getWordsPositionsArray();
-            console.log('333',dataView.WordsPositionsArray);
-
             this.renderMeanings();
-            dataView.test2Answers = this.words.map(i =>{
-                return new Array(i, null);
-            });
-            console.log('answers = ', dataView.test2Answers);
+
         },
 
         renderWords: function() {
@@ -87,6 +79,7 @@ $(function () {
                     class: classTemplate,
                     id: idTemplate.replace('%id%', id),
                     text: item,
+                    busy: '',
                 });
 
                 perent.append(element[0]);
@@ -100,20 +93,24 @@ $(function () {
                     relativeTo: window.body,
 
                     onMouseDown: function(el){
-                        element.className += ' active';
+                        self.setActive(el);
                         self.freeAnswer(el);
+                        self.checkBusy();
                     },
                     onTouchStart: function(el){
-                        el.className += ' active';
+                        self.setActive(el);
                         self.freeAnswer(el);
+                        self.checkBusy();
                     },
                     onMouseUp: function(el){
-                        el.className = el.className.replace(' active', '');
+                        self.removeActive(el);
                         self.stickAnswer(el);
+                        self.checkBusy();
                     },
                     onTouchStop: function(el){
-                        el.className = el.className.replace(' active', '');
+                        self.removeActive(el);
                         self.stickAnswer(el);
+                        self.checkBusy();
                     },
                     
                 }) 
@@ -128,54 +125,48 @@ $(function () {
             el.className = el.className.replace('active', '');
         },
 
-        getElementBottom: function(el) {
-            var box = el.getBoundingClientRect();
-            return box.bottom + pageYOffset
-        },
-
-        getWordsPositionsArray: function() {
-            var res = new Array();
-            $('.test-2-word').each( function( i, item ) {
-                res[i] = new Array(item.offsetTop, item.offsetLeft + item.offsetWidth, i, '', '');
-            });
-            return res
-        },
-
-        stickAnswer: function(el){
-            const x = el.offsetLeft;
-            const y = el.offsetTop;
+        stickAnswer: function(answerElement) {
+            const answerX = answerElement.offsetLeft;
+            const answerY = answerElement.offsetTop;
             const gapForStick = dataView.gapForStick;
-
-            dataView.WordsPositionsArray.forEach((item, i) => {
-                if  ( 
-                        item[3] != 'busy' &&
-                        Math.abs( item[0] - y)  <= gapForStick &&
-                        Math.abs( item[1] - x)  <= gapForStick  
-                    )
-                {
-                    console.log(item[3])
-                    console.log(Math.abs( item[0]) - y)
-                    console.log(Math.abs( item[1]) - x)
-                    el.style.color = 'black';
-                    el.style.top = item[0]+'px';
-                    el.style.left = item[1]+'px';
-
-                    if ( el.style.color == 'black' ) { item[3] = 'busy'; item[4] = el.id; }
-                        console.log(dataView.WordsPositionsArray)
+            const wordElementsArray = $('.test-2-word');
+            for ( let i=0; i<wordElementsArray.length; i++ ) {
+                let wordElement = wordElementsArray[i];
+                let wordX = wordElement.offsetLeft + wordElement.offsetWidth;
+                let wordY = wordElement.offsetTop;
+                if (
+                    wordElement.getAttribute('busy') != 'busy' &&
+                    Math.abs( wordX - answerX)  <= gapForStick &&
+                    Math.abs( wordY - answerY)  <= gapForStick
+                ){
+                    answerElement.style.color = 'black';
+                    answerElement.style.left = wordX+'px';
+                    answerElement.style.top = wordY+'px';
+                    wordElement.setAttribute('busy', answerElement.id);
                 }
-                
-            });
-
-            function between(val, min, max){
-                return val >= min && val <= max;
-            }
+            }         
         },
 
-        freeAnswer: function(el) {
-            el.style.color = 'red';
-            console.log(dataView.WordsPositionsArray)
-        }
-            
+        freeAnswer: function(answerEl) {
+            answerEl.style.color = 'red';
+            const wordElementsArray = $('.test-2-word');
+            for ( let i=0; i<wordElementsArray.length; i++ ) {
+                let wordElement = wordElementsArray[i];
+                if ( wordElement.getAttribute('busy') == answerEl.id ) {
+                    wordElement.setAttribute('busy', '');
+                }
+            }               
+        },
+
+        // between: function (val, min, max){
+        //         return val >= min && val <= max;
+        // }, 
+
+        // getElementBottom: function(el) {
+            // var box = el.getBoundingClientRect();
+            // return box.bottom + pageYOffset
+        // },    
     };
+    
     octopus.init();
 })
