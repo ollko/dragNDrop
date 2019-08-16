@@ -21,8 +21,10 @@ $(function () {
             ' - Fiber – the material like thread that form plant or artificial material (волокно)'
         ],
         
-        'lastElementBottom': 0,
+        
         'gapForStick': 10,
+        'lastElementBottom': 0,
+        'wordElementArray':[],
         'allBusy': false,
         'test2Result': []
     };
@@ -32,6 +34,7 @@ $(function () {
             this.words = dataView.words;
             this.meanings = dataView.meanings;
             this.renderWords();
+            dataView.wordElementArray = $('.test-2-word');
             this.renderMeanings();
 
         },
@@ -95,22 +98,31 @@ $(function () {
                     onMouseDown: function(el){
                         self.setActive(el);
                         self.freeAnswer(el);
-                        self.checkBusy();
                     },
                     onTouchStart: function(el){
                         self.setActive(el);
                         self.freeAnswer(el);
-                        self.checkBusy();
                     },
                     onMouseUp: function(el){
                         self.removeActive(el);
                         self.stickAnswer(el);
                         self.checkBusy();
+                        const button = $('.test-2-button');
+                        if ( dataView.allBusy ) {
+                            button.prop('disabled', false);
+                        } else {
+                            button.prop('disabled', true);
+                        };
                     },
                     onTouchStop: function(el){
                         self.removeActive(el);
                         self.stickAnswer(el);
-                        self.checkBusy();
+                        const button = $('.test-2-button');
+                        if ( dataView.allBusy ) {
+                            button.prop('disabled', false);
+                        } else {
+                            button.prop('disabled', true);
+                        };
                     },
                     
                 }) 
@@ -149,14 +161,26 @@ $(function () {
 
         freeAnswer: function(answerEl) {
             answerEl.style.color = 'red';
-            const wordElementsArray = $('.test-2-word');
-            for ( let i=0; i<wordElementsArray.length; i++ ) {
-                let wordElement = wordElementsArray[i];
-                if ( wordElement.getAttribute('busy') == answerEl.id ) {
-                    wordElement.setAttribute('busy', '');
+            const words = dataView.wordElementArray;
+            for ( let i=0; i<words.length; i++ ) {
+                let word = words[i];
+                if ( word.getAttribute('busy') === answerEl.id ) {
+                    word.setAttribute('busy', '');
                 }
             }               
         },
+
+        checkBusy: function() {
+            const words = dataView.wordElementArray;
+            dataView.allBusy = true;
+            for ( let i=0; i<words.length; i++ ) {
+                console.log(words[i])
+                if ( words[i].getAttribute('busy') === '' ) {
+                    dataView.allBusy = false;
+                    break;
+                }
+            }
+        }
 
         // between: function (val, min, max){
         //         return val >= min && val <= max;
@@ -167,6 +191,6 @@ $(function () {
             // return box.bottom + pageYOffset
         // },    
     };
-    
+
     octopus.init();
 })
