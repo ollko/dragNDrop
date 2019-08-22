@@ -21,7 +21,7 @@ $(function () {
             ' - Fiber – the material like thread that form plant or artificial material (волокно)'
         ],
         
-        
+        'testModalTitle':['GOOD JOB! ', 'Try Again '],
         'gapForStick': 10,
         'lastElementBottom': 0,
         'wordElementArray':[],
@@ -55,7 +55,7 @@ $(function () {
         },
         renderButton: function() {
             console.log('click1')
-            var button = $('.test-2-button1');
+            var button = $('.test-2-button');
             button.on('click', octopus.showAnswerModel);
         }
 
@@ -87,6 +87,7 @@ $(function () {
                 element = $('<div></div>', {
                     class: classTemplate,
                     id: idTemplate.replace('%id%', id),
+                    name: id,
                     text: item,
                     busy: '',
                 });
@@ -153,14 +154,14 @@ $(function () {
                 let wordX = wordElement.offsetLeft + wordElement.offsetWidth;
                 let wordY = wordElement.offsetTop;
                 if (
-                    wordElement.getAttribute('busy') != 'busy' &&
+                    wordElement.getAttribute('busy') === '' &&
                     Math.abs( wordX - answerX)  <= gapForStick &&
                     Math.abs( wordY - answerY)  <= gapForStick
                 ){
                     answerElement.style.color = 'black';
                     answerElement.style.left = wordX+'px';
                     answerElement.style.top = wordY+'px';
-                    wordElement.setAttribute('busy', answerElement.id);
+                    wordElement.setAttribute('busy', answerElement.getAttribute("name"));
                 }
             }         
         },
@@ -169,9 +170,8 @@ $(function () {
             answerEl.style.color = 'red';
             const words = dataView.wordElementArray;
             for ( let i=0; i<words.length; i++ ) {
-                let word = words[i];
-                if ( word.getAttribute('busy') === answerEl.id ) {
-                    word.setAttribute('busy', '');
+                if ( words[i].getAttribute('busy') === answerEl.getAttribute("name") ) {
+                    words[i].setAttribute('busy', '');
                 }
             }               
         },
@@ -180,7 +180,6 @@ $(function () {
             const words = dataView.wordElementArray;
             dataView.allBusy = true;
             for ( let i=0; i<words.length; i++ ) {
-                console.log(words[i])
                 if ( words[i].getAttribute('busy') === '' ) {
                     dataView.allBusy = false;
                     break;
@@ -194,7 +193,13 @@ $(function () {
             let answers = [];
             for ( let i=0; i<words.length; i++ ) {
 
-                answers.push([words[i].id, words[i].getAttribute('busy')])
+                answers.push( words[i].getAttribute('name') == words[i].getAttribute('busy') )
+                console.log(answers)
+            };
+            if ( answers.every(elem => elem === true ) ){
+                $('h5.test-modal-title').text(dataView.testModalTitle[0]);
+            } else {
+                $('h5.test-modal-title').text(dataView.testModalTitle[1]);
             };
             $('p.check-answer-modal').text(answers);
             $('#checkAnswerModal').modal('show');
