@@ -64,3 +64,11 @@ body {
     border-style: dotted;
 
 }
+
+.modal-header {
+    align-items: center;
+}
+
+.checkAnswermyModal-body {
+    justify-content: center;
+}

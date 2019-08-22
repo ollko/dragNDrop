@@ -33,9 +33,9 @@ $(function () {
         init: function() {
             this.words = dataView.words;
             this.meanings = dataView.meanings;
-            this.renderWords();
-            dataView.wordElementArray = $('.test-2-word');
+            this.renderWords();            
             this.renderMeanings();
+            this.renderButton();
 
         },
 
@@ -44,6 +44,7 @@ $(function () {
             var classTemplate = "test-2-word";
             var idTemplate = "test-2-word-%id%";
             octopus.displayArrayData(this.words, false, perentID, classTemplate, idTemplate);
+            dataView.wordElementArray = $('.test-2-word');
         },
 
         renderMeanings: function() {
@@ -52,6 +53,11 @@ $(function () {
             var idTemplate = "test-2-meaning-%id%";
             octopus.displayArrayData(this.meanings, true, perentID, classTemplate, idTemplate);
         },
+        renderButton: function() {
+            console.log('click1')
+            var button = $('.test-2-button1');
+            button.on('click', octopus.showAnswerModel);
+        }
 
     };
 
@@ -180,6 +186,18 @@ $(function () {
                     break;
                 }
             }
+        },
+
+        showAnswerModel: function() {
+            console.log('click2')
+            const words = dataView.wordElementArray;
+            let answers = [];
+            for ( let i=0; i<words.length; i++ ) {
+
+                answers.push([words[i].id, words[i].getAttribute('busy')])
+            };
+            $('p.check-answer-modal').text(answers);
+            $('#checkAnswerModal').modal('show');
         }
 
         // between: function (val, min, max){
